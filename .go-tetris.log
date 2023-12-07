@@ -1,0 +1,8 @@
+2023/11/27 03:16:31 engine.go:57: Engine Start start
+2023/11/27 03:16:31 engine.go:29: Engine Run start
+2023/11/27 03:16:31 engine.go:123: Engine NewGame start
+2023/11/27 03:16:31 engine.go:143: Engine NewGame end
+2023/11/27 03:16:33 engine.go:52: Engine Run end
+2023/11/27 03:16:33 engine.go:86: Engine Start end
+2023/11/27 03:16:33 view.go:31: View Stop start
+2023/11/27 03:16:33 view.go:35: View Stop end

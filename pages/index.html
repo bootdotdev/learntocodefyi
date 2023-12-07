@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "head.html" .}}
+
+<body class="bg-gray-900 text-white" hx-boost="true">
+    {{template "nav.html" .}}
+
+    <main class="p-4 space-y-4 overflow-y-auto">
+        <section class="mb-8 text-center">
+            <h1 class="text-3xl text-white">
+                Welcome to LearnToCode.fyi
+            </h1>
+            <p class="text-lg text-gray-300">
+                Participate in our survey with ease and flexibility.
+            </p>
+        </section>
+        <div class="mx-auto max-w-2xl space-y-4">
+            <a href="/survey">
+                <button
+                    class="w-full p-4 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600">
+                    Start Survey
+                </button>
+            </a>
+        </div>
+    </main>
+</body>
+
+</html>

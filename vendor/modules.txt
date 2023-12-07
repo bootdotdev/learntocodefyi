@@ -1,0 +1,54 @@
+# github.com/antlr/antlr4/runtime/Go/antlr/v4 v4.0.0-20230512164433-5d1fd1a340c9
+## explicit; go 1.18
+github.com/antlr/antlr4/runtime/Go/antlr/v4
+# github.com/go-chi/chi/v5 v5.0.10
+## explicit; go 1.14
+github.com/go-chi/chi/v5
+github.com/go-chi/chi/v5/middleware
+# github.com/joho/godotenv v1.5.1
+## explicit; go 1.12
+github.com/joho/godotenv
+# github.com/klauspost/compress v1.17.2
+## explicit; go 1.18
+github.com/klauspost/compress/flate
+# github.com/libsql/libsql-client-go v0.0.0-20231116123136-ff4e46c3d3a1
+## explicit; go 1.21
+github.com/libsql/libsql-client-go/libsql
+github.com/libsql/libsql-client-go/libsql/internal/hrana
+github.com/libsql/libsql-client-go/libsql/internal/http
+github.com/libsql/libsql-client-go/libsql/internal/http/hranaV2
+github.com/libsql/libsql-client-go/libsql/internal/http/shared
+github.com/libsql/libsql-client-go/libsql/internal/ws
+# github.com/libsql/sqlite-antlr4-parser v0.0.0-20230802215326-5cb5bb604475
+## explicit; go 1.19
+github.com/libsql/sqlite-antlr4-parser/sqliteparser
+github.com/libsql/sqlite-antlr4-parser/sqliteparserutils
+# github.com/pressly/goose/v3 v3.16.0
+## explicit; go 1.19
+github.com/pressly/goose/v3
+github.com/pressly/goose/v3/database
+github.com/pressly/goose/v3/internal/dialect
+github.com/pressly/goose/v3/internal/dialect/dialectquery
+github.com/pressly/goose/v3/internal/sqlparser
+github.com/pressly/goose/v3/lock
+# github.com/sethvargo/go-retry v0.2.4
+## explicit; go 1.16
+github.com/sethvargo/go-retry
+# go.uber.org/multierr v1.11.0
+## explicit; go 1.19
+go.uber.org/multierr
+# golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e
+## explicit; go 1.18
+golang.org/x/exp/constraints
+golang.org/x/exp/slices
+# golang.org/x/sync v0.5.0
+## explicit; go 1.18
+golang.org/x/sync/errgroup
+# nhooyr.io/websocket v1.8.7
+## explicit; go 1.13
+nhooyr.io/websocket
+nhooyr.io/websocket/internal/bpool
+nhooyr.io/websocket/internal/errd
+nhooyr.io/websocket/internal/wsjs
+nhooyr.io/websocket/internal/xsync
+nhooyr.io/websocket/wsjson

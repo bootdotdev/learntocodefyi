@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    queries:
+      - "sqlc/queries"
+      - "sqlc/schema"
+    schema:
+      - "sqlc/schema"
+    gen:
+      go:
+        emit_empty_slices: true
+        emit_pointers_for_null_types: true
+        package: "sqlcdb"
+        out: "internal/sqlcdb"
