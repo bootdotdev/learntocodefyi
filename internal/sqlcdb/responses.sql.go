@@ -54,3 +54,50 @@ func (q *Queries) CreateResponse(ctx context.Context, arg CreateResponseParams) 
 	)
 	return i, err
 }
+
+const getAnsweredQuestions = `-- name: GetAnsweredQuestions :many
+SELECT
+    id, user_id, question_id, survey_id, answer, created_at
+FROM
+    responses
+WHERE
+    user_id = ?
+    AND survey_id = ?
+    AND question_id IN (?)
+`
+
+type GetAnsweredQuestionsParams struct {
+	UserID     string
+	SurveyID   string
+	QuestionID string
+}
+
+func (q *Queries) GetAnsweredQuestions(ctx context.Context, arg GetAnsweredQuestionsParams) ([]Response, error) {
+	rows, err := q.db.QueryContext(ctx, getAnsweredQuestions, arg.UserID, arg.SurveyID, arg.QuestionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Response{}
+	for rows.Next() {
+		var i Response
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.QuestionID,
+			&i.SurveyID,
+			&i.Answer,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

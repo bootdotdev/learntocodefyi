@@ -1,4 +1,4 @@
--- name: CreateTableResponses :exec
+-- +goose Up
 CREATE TABLE IF NOT EXISTS responses (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,

@@ -3,4 +3,16 @@
     <title>LearnToCode.fyi</title>
     <link rel="stylesheet" href="/public/styles.css">
     <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    <script>
+        const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const wsURL = wsProtocol + "//" + window.location.host + "/devreload";
+
+        const conn = new WebSocket(wsURL);
+        conn.onclose = function () {
+            console.log("Connection closed, reloading page")
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
+        };
+    </script>
 </head>

@@ -1,6 +1,8 @@
 {
     "dependencies": {
-        "browser-sync": "^2.29.3",
         "tailwindcss": "^3.3.5"
+    },
+    "scripts": {
+        "tailwind": "tailwindcss -i 'styles.css' -o 'public/styles.css'"
     }
 }

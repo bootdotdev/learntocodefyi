@@ -19,7 +19,7 @@ type Response struct {
 
 type User struct {
 	ID        string
-	HashedIp  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Email     string
 }

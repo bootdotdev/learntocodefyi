@@ -6,9 +6,11 @@
     </div>
     <div class="p-6 text-gray-200">
         {{range $index, $answer := .Answers}}
-        <div><input id="radio{{$index}}" type="radio" name="radioGroup"><label for="radio{{$index}}" class="ml-2">
+        <div><input id="radio{{$index}}" type="radio" name="radioGroup">
+            <label for="radio{{$index}}" class="ml-2">
                 {{$answer}}
-            </label></div>
+            </label>
+        </div>
         {{end}}
     </div>
 </div>

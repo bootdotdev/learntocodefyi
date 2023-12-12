@@ -1,3 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.textlink {
+    @apply text-blue-500 underline hover:text-blue-400;
+}

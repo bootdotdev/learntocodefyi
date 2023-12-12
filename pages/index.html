@@ -6,23 +6,44 @@
 <body class="bg-gray-900 text-white" hx-boost="true">
     {{template "nav.html" .}}
 
-    <main class="p-4 space-y-4 overflow-y-auto">
-        <section class="mb-8 text-center">
-            <h1 class="text-3xl text-white">
-                Welcome to LearnToCode.fyi
-            </h1>
-            <p class="text-lg text-gray-300">
-                Participate in our survey with ease and flexibility.
-            </p>
-        </section>
-        <div class="mx-auto max-w-2xl space-y-4">
-            <a href="/survey">
-                <button
+    <main class="p-4 space-y-4 overflow-y-auto flex flex-col items-center">
+        <div class="max-w-xl flex flex-col gap-8">
+            <div class="text-center">
+                <h1 class="text-4xl text-white">
+                    Welcome to LearnToCode.fyi
+                </h1>
+                <h2 class="text-xl text-gray-300">
+                    The annual survey of everyone learning to code
+                </h2>
+            </div>
+
+            <div class="text-gray-400 gap-2 flex flex-col">
+                <p>
+                    Are you learning to code? It doesn't matter if you're just getting started, if you've been learning
+                    for years, or if you're a senior developer learning a new language. We want to hear from you!
+                </p>
+            </div>
+
+            <form class="flex flex-col gap-2">
+                <div class="flex flex-col gap-2">
+                    <label for="email" class="text-gray-500 text-sm ">Email Address</label>
+                    <input type="email" name="email" id="email" class="p-2 rounded-lg shadow-lg bg-gray-800"
+                        placeholder="name@example.com" required>
+                </div>
+                <button type="submit"
                     class="w-full p-4 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600">
                     Start Survey
                 </button>
-            </a>
+            </form>
+
+            <div class="text-gray-400 gap-2 flex flex-col">
+                <p>
+                    Curious about what this site is? Read more about it <a href="/about" class="textlink">here</a>.
+                </p>
+            </div>
+
         </div>
+
     </main>
 </body>
 

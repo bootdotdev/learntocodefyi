@@ -47,11 +47,19 @@ func main() {
 
 	r.Handle("/public/*", http.StripPrefix("/public", fileServer))
 
+	r.HandleFunc("/devreload", handlerDevReload)
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		templates.ExecuteTemplate(w, "index.html", nil)
 	})
 	r.Get("/survey", func(w http.ResponseWriter, r *http.Request) {
 		templates.ExecuteTemplate(w, "survey.html", nil)
+	})
+	r.Get("/results", func(w http.ResponseWriter, r *http.Request) {
+		templates.ExecuteTemplate(w, "results.html", nil)
+	})
+	r.Get("/about", func(w http.ResponseWriter, r *http.Request) {
+		templates.ExecuteTemplate(w, "about.html", nil)
 	})
 
 	r.Get("/partials/questions/{num}", func(w http.ResponseWriter, r *http.Request) {
@@ -80,13 +88,6 @@ func main() {
 				w,
 				"multiselect.html",
 				questions[num].MultiSelectQuestion,
-			)
-			return
-		case FreeFormQuestionType:
-			templates.ExecuteTemplate(
-				w,
-				"freeform.html",
-				questions[num].FreeFormQuestion,
 			)
 			return
 		}

@@ -1,7 +1,7 @@
 -- name: CreateUser :one
 INSERT INTO users (
     id,
-    hashed_ip,
+    email,
     created_at,
     updated_at
 ) VALUES (
