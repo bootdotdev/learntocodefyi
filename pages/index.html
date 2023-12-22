@@ -24,9 +24,9 @@
                 </p>
             </div>
 
-            <form class="flex flex-col gap-2">
+            <form class="flex flex-col gap-2" hx-post="/login">
                 <div class="flex flex-col gap-2">
-                    <label for="email" class="text-gray-500 text-sm ">Email Address</label>
+                    <label for="email" class="text-gray-500 text-sm">Email Address</label>
                     <input type="email" name="email" id="email" class="p-2 rounded-lg shadow-lg bg-gray-800"
                         placeholder="name@example.com" required>
                 </div>

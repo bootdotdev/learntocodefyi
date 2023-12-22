@@ -4,5 +4,8 @@
     },
     "scripts": {
         "tailwind": "tailwindcss -i 'styles.css' -o 'public/styles.css'"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.7"
     }
 }

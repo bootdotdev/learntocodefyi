@@ -2,10 +2,10 @@ version: "2"
 sql:
   - engine: "sqlite"
     queries:
-      - "sqlc/queries"
-      - "sqlc/schema"
+      - "cmd/app/sqlc/queries"
+      - "cmd/app/sqlc/schema"
     schema:
-      - "sqlc/schema"
+      - "cmd/app/sqlc/schema"
     gen:
       go:
         emit_empty_slices: true

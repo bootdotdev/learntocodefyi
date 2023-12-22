@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS responses (
     survey_id TEXT NOT NULL,
     answer TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(user_id, question_id)
 );

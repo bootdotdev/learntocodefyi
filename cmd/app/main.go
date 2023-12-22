@@ -8,8 +8,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
+	"time"
 
+	"github.com/bootdotdev/learntocodefyi/internal/sendgridwrap"
+	"github.com/bootdotdev/learntocodefyi/internal/sqlcdb"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
@@ -17,6 +19,13 @@ import (
 
 	_ "github.com/libsql/libsql-client-go/libsql"
 )
+
+type handlerState struct {
+	queries        *sqlcdb.Queries
+	templates      *template.Template
+	sendgridClient sendgridwrap.Client
+	jwtSecret      string
+}
 
 func main() {
 	godotenv.Load()
@@ -35,25 +44,30 @@ func main() {
 	if err != nil {
 		log.Fatal("error ensuring database: ", err)
 	}
-	//queries := sqlcdb.New(db)
+	queries := sqlcdb.New(db)
+	templates := template.Must(template.New("").ParseGlob("pages/*.html"))
+	templates = template.Must(templates.ParseGlob("partials/*.html"))
+	sendgridClient := sendgridwrap.NewClient("", os.Getenv("PLATFORM"))
+	hs := handlerState{
+		queries:        queries,
+		templates:      templates,
+		sendgridClient: sendgridClient,
+		jwtSecret:      os.Getenv("JWT_SECRET"),
+	}
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	templates := template.Must(template.New("").ParseGlob("pages/*.html"))
-	templates = template.Must(templates.ParseGlob("partials/*.html"))
-
 	fileServer := http.FileServer(http.Dir("./public"))
-
 	r.Handle("/public/*", http.StripPrefix("/public", fileServer))
-
 	r.HandleFunc("/devreload", handlerDevReload)
+
+	r.Post("/login", hs.handlerLogin)
+	r.Get("/survey", hs.middleAuth(hs.handlerGetSurvey))
+	r.Post("/survey/{question_id}", hs.middleAuth(hs.handlerPostSurvey))
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		templates.ExecuteTemplate(w, "index.html", nil)
-	})
-	r.Get("/survey", func(w http.ResponseWriter, r *http.Request) {
-		templates.ExecuteTemplate(w, "survey.html", nil)
 	})
 	r.Get("/results", func(w http.ResponseWriter, r *http.Request) {
 		templates.ExecuteTemplate(w, "results.html", nil)
@@ -62,40 +76,15 @@ func main() {
 		templates.ExecuteTemplate(w, "about.html", nil)
 	})
 
-	r.Get("/partials/questions/{num}", func(w http.ResponseWriter, r *http.Request) {
-		numStr := chi.URLParam(r, "num")
-		num, err := strconv.Atoi(numStr)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		questions := getQuestions()
-		if num < 0 || num >= len(questions) {
-			http.Error(w, "Question not found", http.StatusNotFound)
-			return
-		}
-
-		switch questions[num].QuestionType {
-		case SingleSelectQuestionType:
-			templates.ExecuteTemplate(
-				w,
-				"singleselect.html",
-				questions[num].SingleSelectQuestion,
-			)
-			return
-		case MultiSelectQuestionType:
-			templates.ExecuteTemplate(
-				w,
-				"multiselect.html",
-				questions[num].MultiSelectQuestion,
-			)
-			return
-		}
-		http.Error(w, "Question type not found", http.StatusNotFound)
-	})
-
 	fmt.Println("Server running on: http://localhost:8080")
-	http.ListenAndServe(":8080", r)
+
+	server := http.Server{
+		Addr:         ":8080",
+		Handler:      r,
+		ReadTimeout:  60 * time.Second,
+		WriteTimeout: 60 * time.Second,
+	}
+	log.Fatal(server.ListenAndServe())
 }
 
 //go:embed sqlc/schema/*.sql

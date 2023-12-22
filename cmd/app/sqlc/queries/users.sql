@@ -1,4 +1,4 @@
--- name: CreateUser :one
+-- name: InsertUser :one
 INSERT INTO users (
     id,
     email,
@@ -9,4 +9,13 @@ INSERT INTO users (
     ?,
     DATE('now'),
     DATE('now')
-) RETURNING *;
+) 
+RETURNING *;
+
+-- name: GetUserByEmail :one
+SELECT * FROM users
+WHERE email = ?;
+
+-- name: GetUser :one
+SELECT * FROM users
+WHERE id = ?;

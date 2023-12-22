@@ -1,13 +1,24 @@
-<div class="rounded-lg border text-card-foreground shadow-sm bg-gray-800 my-4" data-v0-t="card">
-    <div class="flex flex-col space-y-1.5 p-6">
-        <h3 class="text-2xl font-semibold leading-none tracking-tight text-white">Question 3</h3>
-    </div>
-    <div class="p-6 text-gray-200">
-        <div><input id="checkbox1" type="checkbox"><label for="checkbox1" class="ml-2">Option 1</label>
+<div id="question">
+    <form class="rounded-lg border border-gray-500 shadow-sm bg-gray-800 my-4 p-4" hx-post="/survey/{{.ID}}"
+        hx-target="#question">
+        <h3 class="text-2xl font-semibold leading-none tracking-tight text-white">
+            {{.MultiSelectQuestion.Question}}
+        </h3>
+
+        <div class="p-6 text-gray-200">
+            {{range $index, $answer := .MultiSelectQuestion.Answers}}
+            <div>
+                <input id="checkbox{{$index}}" type="checkbox" name="answer" value="{{$answer}}">
+                <label for="checkbox{{$index}}" class="ml-2">
+                    {{$answer}}
+                </label>
+            </div>
+            {{end}}
         </div>
-        <div><input id="checkbox2" type="checkbox"><label for="checkbox2" class="ml-2">Option 2</label>
-        </div>
-        <div><input id="checkbox3" type="checkbox"><label for="checkbox3" class="ml-2">Option 3</label>
-        </div>
-    </div>
+
+        <button type="submit"
+            class="w-full p-4 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600">
+            Submit
+        </button>
+    </form>
 </div>

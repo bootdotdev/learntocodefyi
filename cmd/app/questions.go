@@ -10,6 +10,7 @@ const (
 )
 
 type Question struct {
+	ID                   string
 	QuestionType         QuestionType
 	SingleSelectQuestion *SingleSelectQuestion
 	MultiSelectQuestion  *MultiSelectQuestion
@@ -39,12 +40,14 @@ type CountryQuestion struct {
 func getQuestions() []Question {
 	return []Question{
 		{
+			ID:           "f7a0817c-899e-4452-ba19-65846611ad2e",
 			QuestionType: CountryQuestionType,
 			CountryQuestion: &CountryQuestion{
 				Question: "Where do you live?",
 			},
 		},
 		{
+			ID:           "8a585909-c337-4e53-a098-1bfbd84f0696",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "How old are you?",
@@ -59,6 +62,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "b3da3188-966c-42f1-b264-447177038be1",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "How much formal education have you received? (Doesn't need to be programming related)",
@@ -74,6 +78,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "a918ce09-4237-4cbb-bb63-1d7af8544c53",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "How many years of paid professional programming experience do you have, if any?",
@@ -92,6 +97,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "7d364d99-01b1-4188-8558-4d03018ffeff",
 			QuestionType: MultiSelectQuestionType,
 			MultiSelectQuestion: &MultiSelectQuestion{
 				Question: "Have you completed any certified informal education?",
@@ -105,6 +111,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "08fd2ac4-d3fd-481e-81c6-fca6f4ebfa97",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "How long did you spend learning to code before you landed your first programming job? Only count months where you spent at least 10 hours per week learning. If you don't have a programming job, how long have you been studying in total?",
@@ -123,6 +130,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "4e609528-e46a-46e8-bb7e-4fae878aaa17",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which do you feel have been the most effective resources for learning a new programming language or framework?",
@@ -141,6 +149,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "2f2ef4f7-4b10-4271-88c2-fab66a89e090",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which do you feel have been the most effective resources for learning a new tool or library?",
@@ -159,6 +168,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "11b6b646-424b-45fa-8167-3c39fc4df105",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Where do you get most of your programming news?",
@@ -181,6 +191,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "2e441a8c-6b07-492e-8cbc-0161213310c5",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "How much do you (or did you) hope to earn in your first full time programming job?",
@@ -195,6 +206,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "794c70a1-b66a-46e1-acdf-daeda0d4cb5b",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which types of developer roles are you most interested in?",
@@ -214,6 +226,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "05c6cafc-0b4d-4da9-9715-76870873243c",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which programming languages are you most interested in working with professionally?",
@@ -243,6 +256,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "05d7ec34-479b-4769-bc4d-ed5a59113b3d",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which programming languages are you most interested in learning personally?",
@@ -272,6 +286,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "63626531-f76b-448b-834c-81344afe7d73",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "How do you balance your time in regard to passive and active learning? (Passive learning is watching videos, reading books, etc. Active learning is building projects, coding challenges, etc.)",
@@ -285,6 +300,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "1845f5ff-dabb-4ff7-b0b8-88bd22fd17b1",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "Which of the following do you use first for help when you're stuck?",
@@ -300,6 +316,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "2327236d-32c2-494c-8546-763585f1cbbe",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which of the following have been most effective for networking with professional developers?",
@@ -315,6 +332,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "0881f3f0-9e43-4455-9480-c2ed2ff3c2f1",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "How much money have you spent on all educational resources out of your own pocket?",
@@ -329,6 +347,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "ea0c0dcb-f901-45bd-a4ec-84c10feaf78f",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "How much money has your employer spent on educational resources for you?",
@@ -343,6 +362,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "2eec14d9-ca48-40aa-93ad-d6d3aa4d78a7",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which do you find to be most distracting when you're trying to focus on code?",
@@ -358,6 +378,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "01f659b6-3c9f-4e75-b3f5-e012d4800bfc",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "What do you find most difficult about learning to code?",
@@ -370,6 +391,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "b8531043-0a1e-4090-91d6-5b213c5e6304",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which operating system do you code on?",
@@ -383,6 +405,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "74bfbfe0-0ddf-4363-bcb0-3b977eb093cc",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which do you prefer to code in?",
@@ -394,6 +417,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "ab3f052b-1996-49e2-a78f-0b519183060e",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "How much time do you spend passively learning to code per week?",
@@ -405,6 +429,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "1a74c95b-5bea-4a21-ba1d-d4c3fc35d2aa",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which more accurately describes you?",
@@ -416,6 +441,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "b20c615c-2455-4ded-b05e-9183cc891f8a",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "What are you (or were you) most worried about?",
@@ -434,6 +460,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "f05fc0bb-4da7-4ea1-97c9-83d34a62b59f",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "What are you (or were you) most worried about when choosing a learning resource?",
@@ -449,6 +476,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "f1c91a48-1977-4281-9cba-e8fb3745b671",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Which benefits do you value most in a programming job?",
@@ -463,6 +491,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "be5f094c-3664-4560-8d80-4df432cccf1a",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "For your first job, which are you (or were you) most interested in?",
@@ -475,6 +504,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "3adcddbe-feb5-4eb8-bcba-39cf4be629eb",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "For your first job, do you plan on applying (or did you) to in-person jobs as well?",
@@ -485,6 +515,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "a6cce526-baad-48ab-abe8-da432b932f74",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "Which are you most worried about when it comes to qualifying for a programming job?",
@@ -495,6 +526,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "6d457ed9-5607-4cfb-9302-ccc4d421f5c2",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "Are you actively looking for a programming job?",
@@ -506,6 +538,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "eac750f5-5039-4dfd-914b-f20bde9b0290",
 			QuestionType: SingleSelectQuestionType,
 			SingleSelectQuestion: &SingleSelectQuestion{
 				Question: "How many programming jobs do you apply to per week when you're looking?",
@@ -522,6 +555,7 @@ func getQuestions() []Question {
 			},
 		},
 		{
+			ID:           "70f59f95-9181-46c3-8a0e-03abd75d72a9",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "Where do you look for programming jobs?",
@@ -540,6 +574,7 @@ func getQuestions() []Question {
 		},
 
 		{
+			ID:           "0893ca93-9be5-4411-9c7f-0f1299190911",
 			QuestionType: OrderingQuestionType,
 			OrderingQuestion: &OrderingQuestion{
 				Question: "What are you (or were you) most worried about with applying to for your first programming job?",
