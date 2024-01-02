@@ -1,17 +1,32 @@
 <div id="question">
-    <form id="answersForm" class="rounded-lg border border-gray-500 shadow-sm bg-gray-800 my-4 p-4">
+    <form class="rounded-lg border border-gray-500 shadow-sm bg-gray-800 my-4 p-4" hx-post="/survey/{{.ID}}"
+        hx-target="#question">
         <h3 class="text-2xl font-semibold leading-none tracking-tight text-white mb-4">
             {{.OrderingQuestion.Question}}
         </h3>
         <p class="italic">Drag and drop each answer to rank order them from top to bottom</p>
+
         <ol id="answers" class="p-6 text-gray-200">
             {{range $index, $answer := .OrderingQuestion.Answers}}
-            <li draggable="true" class="draggable p-2 mt-2 border-gray-500 border rounded cursor-move">
-                {{$answer}}
+            <li draggable="true" class="draggable p-2 mt-2 border-gray-500 border rounded cursor-move ">
+                <svg class="inline" fill="rgb(107 114 128)" version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" viewBox="0 0 32 32"
+                    xml:space="preserve">
+                    <title>draggable</title>
+                    <rect x="10" y="6" width="4" height="4" />
+                    <rect x="18" y="6" width="4" height="4" />
+                    <rect x="10" y="14" width="4" height="4" />
+                    <rect x="18" y="14" width="4" height="4" />
+                    <rect x="10" y="22" width="4" height="4" />
+                    <rect x="18" y="22" width="4" height="4" />
+                </svg>
+                <span>{{$answer}}</span>
+                <input type="hidden" name="answer" value="{{$answer}}">
             </li>
             {{end}}
         </ol>
-        <button type="button" onclick="submitAnswers()"
+
+        <button type="submit"
             class="w-full p-4 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600">
             Submit
         </button>
@@ -19,80 +34,52 @@
 
     <script>
         const items = document.querySelectorAll('.draggable');
-        let draggedItem = null; let placeholder = null;
+        let draggedItem = null;
+        let placeholder = document.createElement('li');
+        placeholder.className = 'placeholder';
 
-        const createPlaceholder = () => {
-            const ph = document.createElement('li');
-            ph.classList.add('placeholder');
-            ph.style.visibility = 'hidden'; // Hide the placeholder initially
-            return ph;
-        };
+        items.forEach(item => {
+            item.addEventListener('dragstart', function (e) {
+                draggedItem = item;
+                placeholder.style.height = `${item.offsetHeight}px`;
+                item.parentNode.insertBefore(placeholder, item.nextSibling);
+                setTimeout(() => item.style.display = 'none', 0);
+            });
 
-        placeholder = createPlaceholder();
+            item.addEventListener('dragend', function () {
+                item.style.display = 'block';
+                placeholder.replaceWith(draggedItem);
+                draggedItem = null;
+            });
+        });
 
-        const removeWhiteLines = (target) => {
-            const whiteLines = document.querySelectorAll('.white-line');
-            for (const whiteLine of whiteLines) {
-                whiteLine.remove();
+        const list = document.getElementById('answers');
+        list.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            const currentHoveredItem = e.target.closest('.draggable');
+            if (currentHoveredItem && draggedItem !== currentHoveredItem) {
+                adjustPlaceholderPosition(currentHoveredItem);
             }
-            target.classList.add('mt-2');
-        }
+        });
 
-        const addWhiteLine = (target) => {
-            const whiteLine = document.createElement('div');
-            whiteLine.classList.add('white-line');
-            whiteLine.classList.add('border-b-2');
-            whiteLine.classList.add('my-2');
-            whiteLine.classList.add('border-gray-500');
-            whiteLine.classList.add('w-full');
-            target.classList.remove('mt-2');
-            target.parentNode.insertBefore(whiteLine, target);
-        }
+        list.addEventListener('drop', function (e) {
+            e.preventDefault();
+            if (draggedItem) {
+                placeholder.replaceWith(draggedItem);
+                draggedItem.style.display = 'block';
+                draggedItem = null;
+            }
+        });
 
-        for (const item of items) {
-            item.addEventListener('dragstart', e => {
-                draggedItem = e.target;
-                placeholder.style.height = `${draggedItem.offsetHeight}px`; // Set the height of the placeholder
-                draggedItem.parentNode.insertBefore(placeholder, draggedItem.nextSibling); // Insert placeholder
-                setTimeout(() => draggedItem.style.display = "none", 0);
-            });
-
-            item.addEventListener('dragend', e => {
-                setTimeout(() => {
-                    draggedItem.style.display = "block";
-                    placeholder.parentNode.removeChild(placeholder); // Remove placeholder
-                    draggedItem = null;
-                }, 0);
-            });
-
-            item.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            item.addEventListener('dragenter', (e) => {
-                e.preventDefault();
-                addWhiteLine(e.target)
-            });
-
-            item.addEventListener('dragleave', (e) => {
-                removeWhiteLines(e.target);
-            });
-
-            item.addEventListener('drop', (e) => {
-                removeWhiteLines(e.target);
-                e.target.style.backgroundColor = 'transparent';
-                if (draggedItem === null) {
-                    return;
-                }
-                let allItems = document.querySelectorAll('.draggable');
-                let indexDragged = Array.from(allItems).indexOf(draggedItem);
-                let indexDropped = Array.from(allItems).indexOf(e.target);
-                if (indexDragged > indexDropped) {
-                    e.target.parentNode.insertBefore(draggedItem, e.target);
-                } else {
-                    e.target.parentNode.insertBefore(draggedItem, e.target.nextSibling);
-                }
-            });
+        function adjustPlaceholderPosition(currentHoveredItem) {
+            const allItems = Array.from(document.querySelectorAll('.draggable'));
+            const indexDragged = allItems.indexOf(draggedItem);
+            const indexHovered = allItems.indexOf(currentHoveredItem);
+            if (indexHovered > indexDragged) {
+                currentHoveredItem.parentNode.insertBefore(placeholder, currentHoveredItem.nextSibling);
+            } else {
+                currentHoveredItem.parentNode.insertBefore(placeholder, currentHoveredItem);
+            }
         }
     </script>
 </div>
