@@ -1,0 +1,61 @@
+<div id="question">
+    <form class="rounded-lg border border-gray-500 shadow-sm bg-gray-800 my-4 p-4" hx-post="/survey/{{.ID}}"
+        hx-target="#question">
+        <h3 class="text-2xl font-semibold leading-none tracking-tight text-white mb-2">
+            {{.ChoiceQuestion.Question}}
+        </h3>
+
+        {{if lt .ChoiceQuestion.MaxSelection 1}}
+        <p class="text-sm text-gray-400">
+            Select as many choices as you like.
+        </p>
+        {{else}}
+        <p class="text-sm text-gray-400">
+            Select up to {{.ChoiceQuestion.MaxSelection}} choices.
+        </p>
+        {{end}}
+
+        <div class="p-6 text-gray-200">
+            {{range $index, $answer := .ChoiceQuestion.Answers}}
+            <div>
+                <input id="checkbox{{$index}}" type="checkbox" name="answer" value="{{$answer}}">
+                <label for="checkbox{{$index}}" class="ml-2">
+                    {{$answer}}
+                </label>
+            </div>
+            {{end}}
+        </div>
+
+        <button type="submit"
+            class="w-full p-4 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600">
+            Submit
+        </button>
+    </form>
+
+    <input type="hidden" id="hiddenMaxSelectionData" value="{{.ChoiceQuestion.MaxSelection }}" />
+
+    <script>
+        (() => {
+            const maxLimit = parseInt(document.getElementById('hiddenMaxSelectionData').value);
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="answer"]');
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    const checkedCount = document.querySelectorAll('input[type="checkbox"][name="answer"]:checked').length;
+                    if (checkedCount >= maxLimit) {
+                        checkboxes.forEach(function (item) {
+                            if (!item.checked) {
+                                item.disabled = true;
+                            }
+                        });
+                    } else {
+                        checkboxes.forEach(function (item) {
+                            item.disabled = false;
+                        });
+                    }
+                });
+            });
+        })()
+    </script>
+
+</div>

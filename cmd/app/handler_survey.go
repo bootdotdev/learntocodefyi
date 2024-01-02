@@ -20,12 +20,19 @@ func (hs *handlerState) handlerGetSurvey(w http.ResponseWriter, r *http.Request,
 		http.Error(w, "error getting next question", http.StatusInternalServerError)
 		return
 	}
-	if done {
-		http.Redirect(w, r, "/thanks", http.StatusFound)
-		return
+
+	type SurveyData struct {
+		Question Question
+		Done     bool
 	}
 
-	hs.templates.ExecuteTemplate(w, "survey.html", nextQuestion)
+	err = hs.templates.ExecuteTemplate(w, "survey.html", SurveyData{
+		Question: nextQuestion,
+		Done:     done,
+	})
+	if err != nil {
+		log.Println("Error executing template:", err)
+	}
 }
 
 func (hs *handlerState) getNextQuestion(r *http.Request, user sqlcdb.User) (question Question, done bool, err error) {
@@ -56,6 +63,25 @@ func (hs *handlerState) getNextQuestion(r *http.Request, user sqlcdb.User) (ques
 }
 
 func (hs *handlerState) handlerPostSurvey(w http.ResponseWriter, r *http.Request, user sqlcdb.User) {
+	questionID := chi.URLParam(r, "question_id")
+	if questionID == "" {
+		http.Error(w, "Question ID is required", http.StatusBadRequest)
+		return
+	}
+
+	questions := getQuestions()
+	questionStruct := Question{}
+	for _, question := range questions {
+		if question.ID == questionID {
+			questionStruct = question
+			break
+		}
+	}
+	if questionStruct.ID == "" {
+		http.Error(w, "Question ID not found", http.StatusBadRequest)
+		return
+	}
+
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "Error parsing form: "+err.Error(), http.StatusBadRequest)
 		return
@@ -66,23 +92,10 @@ func (hs *handlerState) handlerPostSurvey(w http.ResponseWriter, r *http.Request
 		http.Error(w, "Answer is required", http.StatusBadRequest)
 		return
 	}
-
-	questionID := chi.URLParam(r, "question_id")
-	if questionID == "" {
-		http.Error(w, "Question ID is required", http.StatusBadRequest)
-		return
-	}
-
-	questions := getQuestions()
-	found := false
-	for _, question := range questions {
-		if question.ID == questionID {
-			found = true
-			break
-		}
-	}
-	if !found {
-		http.Error(w, "Question ID not found", http.StatusBadRequest)
+	if questionStruct.QuestionType == ChoiceQuestionType &&
+		questionStruct.ChoiceQuestion.MaxSelection > 0 &&
+		len(answers) > questionStruct.ChoiceQuestion.MaxSelection {
+		http.Error(w, "Too many answers selected", http.StatusBadRequest)
 		return
 	}
 
@@ -102,6 +115,10 @@ func (hs *handlerState) handlerPostSurvey(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	hs.renderQuestionPartial(w, r, user)
+}
+
+func (hs *handlerState) renderQuestionPartial(w http.ResponseWriter, r *http.Request, user sqlcdb.User) {
 	nextQuestion, done, err := hs.getNextQuestion(r, user)
 	if err != nil {
 		log.Println("Error getting next question:", err)
@@ -109,22 +126,29 @@ func (hs *handlerState) handlerPostSurvey(w http.ResponseWriter, r *http.Request
 		return
 	}
 	if done {
-		http.Redirect(w, r, "/thanks", http.StatusFound)
+		err := hs.templates.ExecuteTemplate(w, "thanks.html", nil)
+		if err != nil {
+			log.Println("Error executing template:", err)
+		}
 		return
 	}
 
 	switch nextQuestion.QuestionType {
-	case MultiSelectQuestionType:
-		hs.templates.ExecuteTemplate(w, "multiselect.html", nextQuestion)
+	case ChoiceQuestionType:
+		if nextQuestion.ChoiceQuestion.MaxSelection == 1 {
+			hs.templates.ExecuteTemplate(w, "singlechoice.html", nextQuestion)
+			return
+		}
+		err := hs.templates.ExecuteTemplate(w, "multichoice.html", nextQuestion)
+		if err != nil {
+			log.Println("Error executing template:", err)
+		}
 		return
 	case CountryQuestionType:
-		hs.templates.ExecuteTemplate(w, "country.html", nextQuestion)
-		return
-	case SingleSelectQuestionType:
-		hs.templates.ExecuteTemplate(w, "singleselect.html", nextQuestion)
-		return
-	case OrderingQuestionType:
-		hs.templates.ExecuteTemplate(w, "ordering.html", nextQuestion)
+		err := hs.templates.ExecuteTemplate(w, "country.html", nextQuestion)
+		if err != nil {
+			log.Println("Error executing template:", err)
+		}
 		return
 	default:
 		log.Println("Unknown question type:", nextQuestion.QuestionType)

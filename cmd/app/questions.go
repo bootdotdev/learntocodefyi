@@ -3,34 +3,21 @@ package main
 type QuestionType string
 
 const (
-	SingleSelectQuestionType QuestionType = "singleselect"
-	MultiSelectQuestionType  QuestionType = "multiselect"
-	OrderingQuestionType     QuestionType = "ordering"
-	CountryQuestionType      QuestionType = "country"
+	ChoiceQuestionType  QuestionType = "choice"
+	CountryQuestionType QuestionType = "country"
 )
 
 type Question struct {
-	ID                   string
-	QuestionType         QuestionType
-	SingleSelectQuestion *SingleSelectQuestion
-	MultiSelectQuestion  *MultiSelectQuestion
-	OrderingQuestion     *OrderingQuestion
-	CountryQuestion      *CountryQuestion
+	ID              string
+	QuestionType    QuestionType
+	ChoiceQuestion  *ChoiceQuestion
+	CountryQuestion *CountryQuestion
 }
 
-type SingleSelectQuestion struct {
-	Question string
-	Answers  []string
-}
-
-type MultiSelectQuestion struct {
-	Question string
-	Answers  []string
-}
-
-type OrderingQuestion struct {
-	Question string
-	Answers  []string
+type ChoiceQuestion struct {
+	Question     string
+	Answers      []string
+	MaxSelection int
 }
 
 type CountryQuestion struct {
@@ -48,8 +35,8 @@ func getQuestions() []Question {
 		},
 		{
 			ID:           "8a585909-c337-4e53-a098-1bfbd84f0696",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How old are you?",
 				Answers: []string{
 					"Under 18",
@@ -59,12 +46,13 @@ func getQuestions() []Question {
 					"45-54",
 					"Over 54",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "b3da3188-966c-42f1-b264-447177038be1",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How much formal education have you received? (Doesn't need to be programming related)",
 				Answers: []string{
 					"Primary/elementary school",
@@ -75,12 +63,13 @@ func getQuestions() []Question {
 					"Master's degree",
 					"Doctoral degree",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "a918ce09-4237-4cbb-bb63-1d7af8544c53",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How many years of paid professional programming experience do you have, if any?",
 				Answers: []string{
 					"0",
@@ -94,13 +83,14 @@ func getQuestions() []Question {
 					"7-8",
 					"8+",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "7d364d99-01b1-4188-8558-4d03018ffeff",
-			QuestionType: MultiSelectQuestionType,
-			MultiSelectQuestion: &MultiSelectQuestion{
-				Question: "Have you completed any certified informal education?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Have you completed any of the following types of certified informal education?",
 				Answers: []string{
 					"Physical Bootcamp",
 					"Online Bootcamp (With live instruction)",
@@ -108,12 +98,13 @@ func getQuestions() []Question {
 					"University certificate program",
 					"Online course",
 				},
+				MaxSelection: -1,
 			},
 		},
 		{
 			ID:           "08fd2ac4-d3fd-481e-81c6-fca6f4ebfa97",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How long did you spend learning to code before you landed your first programming job? Only count months where you spent at least 10 hours per week learning. If you don't have a programming job, how long have you been studying in total?",
 				Answers: []string{
 					"<3 months",
@@ -127,12 +118,13 @@ func getQuestions() []Question {
 					"4-6 years",
 					"6+ years",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "4e609528-e46a-46e8-bb7e-4fae878aaa17",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which do you feel have been the most effective resources for learning a new programming language or framework?",
 				Answers: []string{
 					"Official documentation",
@@ -146,12 +138,13 @@ func getQuestions() []Question {
 					"Text-based courses",
 					"Coding challenges",
 				},
+				MaxSelection: 3,
 			},
 		},
 		{
 			ID:           "2f2ef4f7-4b10-4271-88c2-fab66a89e090",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which do you feel have been the most effective resources for learning a new tool or library?",
 				Answers: []string{
 					"Official documentation",
@@ -165,12 +158,13 @@ func getQuestions() []Question {
 					"Text-based courses",
 					"Coding challenges",
 				},
+				MaxSelection: 3,
 			},
 		},
 		{
 			ID:           "11b6b646-424b-45fa-8167-3c39fc4df105",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Where do you get most of your programming news?",
 				Answers: []string{
 					"Twitter/X",
@@ -188,12 +182,13 @@ func getQuestions() []Question {
 					"TikTok",
 					"Other",
 				},
+				MaxSelection: 5,
 			},
 		},
 		{
 			ID:           "2e441a8c-6b07-492e-8cbc-0161213310c5",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How much do you (or did you) hope to earn in your first full time programming job?",
 				Answers: []string{
 					"<$20,000 / year",
@@ -203,12 +198,13 @@ func getQuestions() []Question {
 					"$80,000 - $100,000 / year",
 					">$100,000 / year",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "794c70a1-b66a-46e1-acdf-daeda0d4cb5b",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which types of developer roles are you most interested in?",
 				Answers: []string{
 					"Front-end web",
@@ -223,12 +219,13 @@ func getQuestions() []Question {
 					"Database Administrator",
 					"Embedded applications or devices",
 				},
+				MaxSelection: 3,
 			},
 		},
 		{
 			ID:           "05c6cafc-0b4d-4da9-9715-76870873243c",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which programming languages are you most interested in working with professionally?",
 				Answers: []string{
 					"JavaScript",
@@ -253,12 +250,13 @@ func getQuestions() []Question {
 					"Zig",
 					"other",
 				},
+				MaxSelection: 5,
 			},
 		},
 		{
 			ID:           "05d7ec34-479b-4769-bc4d-ed5a59113b3d",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which programming languages are you most interested in learning personally?",
 				Answers: []string{
 					"JavaScript",
@@ -283,27 +281,29 @@ func getQuestions() []Question {
 					"Zig",
 					"other",
 				},
+				MaxSelection: 5,
 			},
 		},
 		{
 			ID:           "63626531-f76b-448b-834c-81344afe7d73",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How do you balance your time in regard to passive and active learning? (Passive learning is watching videos, reading books, etc. Active learning is building projects, coding challenges, etc.)",
 				Answers: []string{
-					"Almost entirely passive",
-					"Almost entirely active",
-					"Mostly passive",
-					"Mostly active",
-					"50/50",
+					"10% Passive, 90% Active",
+					"25% Passive, 75% Active",
+					"50% Passive, 50% Active",
+					"75% Passive, 25% Active",
+					"90% Passive, 10% Active",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "1845f5ff-dabb-4ff7-b0b8-88bd22fd17b1",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
-				Question: "Which of the following do you use first for help when you're stuck?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Which of the following do you use most for help when you're stuck?",
 				Answers: []string{
 					"Official documentation",
 					"Web Search (e.g. Google)",
@@ -313,12 +313,13 @@ func getQuestions() []Question {
 					"Live community (e.g. Discord, Slack)",
 					"A personal friend, family member, or colleague",
 				},
+				MaxSelection: 2,
 			},
 		},
 		{
 			ID:           "2327236d-32c2-494c-8546-763585f1cbbe",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which of the following have been most effective for networking with professional developers?",
 				Answers: []string{
 					"Local Meetups",
@@ -326,15 +327,15 @@ func getQuestions() []Question {
 					"Conferences",
 					"Slack communities",
 					"Discord communities",
-					"Twitter/X",
-					"LinkedIn",
+					"Social Media",
 				},
+				MaxSelection: 2,
 			},
 		},
 		{
 			ID:           "0881f3f0-9e43-4455-9480-c2ed2ff3c2f1",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How much money have you spent on all educational resources out of your own pocket?",
 				Answers: []string{
 					"$0",
@@ -344,12 +345,13 @@ func getQuestions() []Question {
 					"$10,000-$49,999",
 					"$50,000+",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "ea0c0dcb-f901-45bd-a4ec-84c10feaf78f",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "How much money has your employer spent on educational resources for you?",
 				Answers: []string{
 					"$0",
@@ -359,12 +361,13 @@ func getQuestions() []Question {
 					"$10,000-$49,999",
 					"$50,000+",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "2eec14d9-ca48-40aa-93ad-d6d3aa4d78a7",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which do you find to be most distracting when you're trying to focus on code?",
 				Answers: []string{
 					"Social Videos (YouTube, TikTok, etc.)",
@@ -375,12 +378,13 @@ func getQuestions() []Question {
 					"Home Life (Family, Roommates, etc.)",
 					"Video Games",
 				},
+				MaxSelection: 3,
 			},
 		},
 		{
 			ID:           "01f659b6-3c9f-4e75-b3f5-e012d4800bfc",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "What do you find most difficult about learning to code?",
 				Answers: []string{
 					"Finding the time",
@@ -388,13 +392,14 @@ func getQuestions() []Question {
 					"Getting help with specific problems when I'm stuck",
 					"Knowing what to learn next",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "b8531043-0a1e-4090-91d6-5b213c5e6304",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "Which operating system do you code on?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Which operating system do you primarily code on?",
 				Answers: []string{
 					"Windows",
 					"Windows (WSL)",
@@ -402,84 +407,86 @@ func getQuestions() []Question {
 					"Linux",
 					"ChromeOS",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "74bfbfe0-0ddf-4363-bcb0-3b977eb093cc",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which do you prefer to code in?",
 				Answers: []string{
-					"Full IDE (Visual Studio, IntelliJ, etc.)",
-					"Lightweight IDE (VS Code, Atom, etc.)",
-					"Terminal Editor (Vim, Emacs, etc.)",
+					"Visual Studio Code",
+					"Visual Studio",
+					"IntelliJ IDEA",
+					"NotePad++",
+					"Vim",
+					"PyCharm",
+					"Jupyter Notebooks",
+					"Sublime Text",
+					"Neovim",
+					"Eclipse",
+					"Xcode",
+					"Android Studio",
+					"Emacs",
+					"Goland",
+					"Other",
 				},
-			},
-		},
-		{
-			ID:           "ab3f052b-1996-49e2-a78f-0b519183060e",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "How much time do you spend passively learning to code per week?",
-				Answers: []string{
-					"Full IDE (Visual Studio, IntelliJ, etc.)",
-					"Lightweight IDE (VS Code, Atom, etc.)",
-					"Terminal Editor (Vim, Emacs, etc.)",
-				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "1a74c95b-5bea-4a21-ba1d-d4c3fc35d2aa",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "Which more accurately describes you?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Which is the hardest part of building large projects from scratch?",
 				Answers: []string{
-					"I can follow tutorials, but I struggle to build my own applications",
-					"I understand the fundamentals of programming and computer science, but I struggle to build my own applications",
-					"I've don't find building my own applications to be particularly difficult",
+					"I can follow guided tutorials, but don't know where to start on my own",
+					"I understand fundamentals and theory, but don't know how to put it all together",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "b20c615c-2455-4ded-b05e-9183cc891f8a",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "What are you (or were you) most worried about?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Which are you most worried about?",
 				Answers: []string{
-					"I don't know which languages or frameworks I should choose",
-					"I don't know if I should spend more time on theory or practice",
 					"I'm worried AI will replace programmers",
 					"I'm worried I'm not smart enough to be a programmer",
-					"I'm worried I'm too old to be a programmer",
+					"I'm worried I'll be discriminated against",
 					"I'm worried I don't have enough time in my day to study",
 					"I'm worried it will take too long to learn to code",
 					"I'm worried that it's too expensive to learn to code",
-					"I'm worried that my location will make it hard to get a job",
-					"I'm worried that even though I'm spending time, I'm not making progress",
+					"I'm worried I'm not in a good location for coding jobs",
 				},
+				MaxSelection: 3,
 			},
 		},
 		{
 			ID:           "f05fc0bb-4da7-4ea1-97c9-83d34a62b59f",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "What are you (or were you) most worried about when choosing a learning resource?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "What worriess you most about a new learning resource?",
 				Answers: []string{
-					"I don't know if this resource will be hands-on enough",
-					"I don't know if this resource will be too hard or too easy",
-					"I don't know if this resource will be too expensive",
-					"I don't know if this resource will be too time consuming",
-					"I don't know if this resource will be too boring",
-					"I don't know if this resource will have innacurate or misleading information",
-					"I don't know if this resource will teach the concepts clearly and thoroughly enough",
+					"I'm worried it won't be hands-on enough",
+					"I'm worried it will be too hard or too easy",
+					"I'm worried it will be too expensive",
+					"I'm worried it will take too long",
+					"I'm worried it will be too boring and I'll lose interest",
+					"I'm worried it will have innacurate or misleading information",
+					"I'm worried it won't teach clearly enough",
+					"I'm worried it won't go in depth enough",
 				},
+				MaxSelection: 3,
 			},
 		},
 		{
 			ID:           "f1c91a48-1977-4281-9cba-e8fb3745b671",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "Which benefits do you value most in a programming job?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Which do you value most in a programming job?",
 				Answers: []string{
 					"High salary",
 					"Health insurance",
@@ -488,12 +495,13 @@ func getQuestions() []Question {
 					"Equity in the company",
 					"Fun environment (ping pong, free food, etc.)",
 				},
+				MaxSelection: 2,
 			},
 		},
 		{
 			ID:           "be5f094c-3664-4560-8d80-4df432cccf1a",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "For your first job, which are you (or were you) most interested in?",
 				Answers: []string{
 					"Fully remote, same country",
@@ -501,47 +509,51 @@ func getQuestions() []Question {
 					"Hybrid",
 					"In office",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "3adcddbe-feb5-4eb8-bcba-39cf4be629eb",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "For your first job, do you plan on applying (or did you) to in-person jobs as well?",
 				Answers: []string{
 					"Yes",
 					"No",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "a6cce526-baad-48ab-abe8-da432b932f74",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Which are you most worried about when it comes to qualifying for a programming job?",
 				Answers: []string{
-					"I'm worried I can't build production-ready applications",
-					"I'm worried I don't understand computer science fundamentals well enough",
+					"I'm worried I don't know how to build practical applications from scratch",
+					"I'm worried I don't understand theory and fundamentals well enough",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "6d457ed9-5607-4cfb-9302-ccc4d421f5c2",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "Are you actively looking for a programming job?",
 				Answers: []string{
 					"Yes, seriously",
-					"Yes, but casually",
+					"Yes, casually",
 					"No",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "eac750f5-5039-4dfd-914b-f20bde9b0290",
-			QuestionType: SingleSelectQuestionType,
-			SingleSelectQuestion: &SingleSelectQuestion{
-				Question: "How many programming jobs do you apply to per week when you're looking?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "How many programming jobs do you apply to per week while you're actively looking?",
 				Answers: []string{
 					"0",
 					"1-5",
@@ -552,13 +564,14 @@ func getQuestions() []Question {
 					"80-160",
 					"160+",
 				},
+				MaxSelection: 1,
 			},
 		},
 		{
 			ID:           "70f59f95-9181-46c3-8a0e-03abd75d72a9",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
-				Question: "Where do you look for programming jobs?",
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
+				Question: "Where are your favorite places to look for programming jobs?",
 				Answers: []string{
 					"Big job boards (LinkedIn, Indeed, etc.)",
 					"Small niche job boards",
@@ -570,13 +583,14 @@ func getQuestions() []Question {
 					"Cold outreach (dms, emails, etc.)",
 					"Recruiters",
 				},
+				MaxSelection: 3,
 			},
 		},
 
 		{
 			ID:           "0893ca93-9be5-4411-9c7f-0f1299190911",
-			QuestionType: OrderingQuestionType,
-			OrderingQuestion: &OrderingQuestion{
+			QuestionType: ChoiceQuestionType,
+			ChoiceQuestion: &ChoiceQuestion{
 				Question: "What are you (or were you) most worried about with applying to for your first programming job?",
 				Answers: []string{
 					"I don't have the practical skills",
@@ -588,6 +602,7 @@ func getQuestions() []Question {
 					"I don't have a good personal brand or social media presence",
 					"I don't know the right languages, frameworks, or tools",
 				},
+				MaxSelection: 3,
 			},
 		},
 	}
