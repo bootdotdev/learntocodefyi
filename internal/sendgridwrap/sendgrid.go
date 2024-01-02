@@ -1,6 +1,8 @@
 package sendgridwrap
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/sendgrid/sendgrid-go"
@@ -9,6 +11,10 @@ import (
 
 const (
 	host = "https://api.sendgrid.com"
+)
+
+const (
+	LearnToCodeFYIListID = "d9b0b0c0-5b0a-4b0a-9b0a-0b0a0b0a0b0a"
 )
 
 // Client -
@@ -74,6 +80,50 @@ func (c Client) SendMagicLink(toEmail, toName, loginLink string) error {
 	_, err := sendgrid.MakeRequest(request)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+// UpsertContact -
+// https://docs.sendgrid.com/api-reference/contacts/add-or-update-a-contact
+func (c Client) UpsertContact(email string, listIDs []string) error {
+	if c.Platform != "PROD" {
+		log.Println("Would upsert contact:")
+		log.Println("To:", email)
+		log.Println("List IDs:", listIDs)
+		return nil
+	}
+
+	request := sendgrid.GetRequest(c.APIKey, "/v3/marketing/contacts", host)
+	request.Method = "PUT"
+
+	type contactModel struct {
+		Email string `json:"email"`
+	}
+
+	type reqModel struct {
+		ListIDs  []string       `json:"list_ids,omitempty"`
+		Contacts []contactModel `json:"contacts"`
+	}
+
+	contact := contactModel{
+		Email: email,
+	}
+
+	dat, err := json.Marshal(reqModel{
+		ListIDs:  listIDs,
+		Contacts: []contactModel{contact},
+	})
+	if err != nil {
+		return err
+	}
+	request.Body = dat
+	response, err := sendgrid.API(request)
+	if err != nil {
+		return err
+	}
+	if response.StatusCode > 299 {
+		return fmt.Errorf("bad response from sendgrid. code: %v, body %v", response.StatusCode, response.Body)
 	}
 	return nil
 }

@@ -6,14 +6,24 @@
 <body class="bg-gray-900 text-white" hx-boost="true">
     {{template "nav.html" .}}
 
-    <div class="mx-auto max-w-2xl space-y-4">
-        <h1>Survey Complete</h1>
+    <div class="mx-auto max-w-2xl space-y-4 text-gray-400 gap-2 flex flex-col">
+        <h1 class="text-4xl text-white">Survey Complete</h1>
         <p>
             Thank you so much for completing this year's survey! Your answers have been recorded safely.
         </p>
         <p>
-            If you would like to be notifed when the results are published, just click the button below. Otherwise, you
-            are free to close this page.
+            If you would like to be notifed when the results are published, just click the button below.
+        </p>
+
+        <form class="flex flex-col gap-2" hx-post="/subscribe">
+            <button type="submit"
+                class="w-full p-4 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600">
+                Notify Me of Results
+            </button>
+        </form>
+
+        <p>
+            Otherwise, you are free to close this page.
         </p>
     </div>
 </body>

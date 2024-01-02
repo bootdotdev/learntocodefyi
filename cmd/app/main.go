@@ -65,6 +65,7 @@ func main() {
 	r.Post("/login", hs.handlerLogin)
 	r.Get("/survey", hs.middleAuth(hs.handlerGetSurvey))
 	r.Post("/survey/{question_id}", hs.middleAuth(hs.handlerPostSurvey))
+	r.Post("/subscribe", hs.middleAuth(hs.handlerPostSubscribe))
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		templates.ExecuteTemplate(w, "index.html", nil)
@@ -74,6 +75,9 @@ func main() {
 	})
 	r.Get("/about", func(w http.ResponseWriter, r *http.Request) {
 		templates.ExecuteTemplate(w, "about.html", nil)
+	})
+	r.Get("/thanks", func(w http.ResponseWriter, r *http.Request) {
+		templates.ExecuteTemplate(w, "thanks.html", nil)
 	})
 
 	fmt.Println("Server running on: http://localhost:8080")

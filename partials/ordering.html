@@ -33,53 +33,62 @@
     </form>
 
     <script>
-        const items = document.querySelectorAll('.draggable');
-        let draggedItem = null;
-        let placeholder = document.createElement('li');
-        placeholder.className = 'placeholder';
-
-        items.forEach(item => {
-            item.addEventListener('dragstart', function (e) {
-                draggedItem = item;
-                placeholder.style.height = `${item.offsetHeight}px`;
-                item.parentNode.insertBefore(placeholder, item.nextSibling);
-                setTimeout(() => item.style.display = 'none', 0);
-            });
-
-            item.addEventListener('dragend', function () {
-                item.style.display = 'block';
-                placeholder.replaceWith(draggedItem);
-                draggedItem = null;
-            });
-        });
-
-        const list = document.getElementById('answers');
-        list.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            const currentHoveredItem = e.target.closest('.draggable');
-            if (currentHoveredItem && draggedItem !== currentHoveredItem) {
-                adjustPlaceholderPosition(currentHoveredItem);
-            }
-        });
-
-        list.addEventListener('drop', function (e) {
-            e.preventDefault();
-            if (draggedItem) {
-                placeholder.replaceWith(draggedItem);
-                draggedItem.style.display = 'block';
-                draggedItem = null;
-            }
-        });
-
-        function adjustPlaceholderPosition(currentHoveredItem) {
-            const allItems = Array.from(document.querySelectorAll('.draggable'));
-            const indexDragged = allItems.indexOf(draggedItem);
-            const indexHovered = allItems.indexOf(currentHoveredItem);
-            if (indexHovered > indexDragged) {
-                currentHoveredItem.parentNode.insertBefore(placeholder, currentHoveredItem.nextSibling);
-            } else {
-                currentHoveredItem.parentNode.insertBefore(placeholder, currentHoveredItem);
-            }
+        if (!window.draggedItem) {
+            window.draggedItem = null;
         }
+        if (!window.placeholder) {
+            window.placeholder = document.createElement('li');
+        }
+        window.placeholder.className = 'placeholder';
+        (() => {
+            const items = document.querySelectorAll('.draggable');
+            items.forEach(item => {
+                item.addEventListener('dragstart', function (e) {
+                    console.log('dragstart');
+                    window.draggedItem = item;
+                    window.placeholder.style.height = `${item.offsetHeight}px`;
+                    item.parentNode.insertBefore(window.placeholder, item.nextSibling);
+                    setTimeout(() => item.style.display = 'none', 0);
+                });
+
+                item.addEventListener('dragend', function () {
+                    console.log('dragend');
+                    item.style.display = 'block';
+                    window.placeholder.replaceWith(window.draggedItem);
+                    window.draggedItem = null;
+                });
+            });
+
+            const list = document.getElementById('answers');
+            list.addEventListener('dragover', function (e) {
+                console.log('dragover');
+                e.preventDefault();
+                const currentHoveredItem = e.target.closest('.draggable');
+                if (currentHoveredItem && window.draggedItem !== currentHoveredItem) {
+                    adjustPlaceholderPosition(currentHoveredItem);
+                }
+            });
+
+            list.addEventListener('drop', function (e) {
+                console.log('drop');
+                e.preventDefault();
+                if (window.draggedItem) {
+                    window.placeholder.replaceWith(window.draggedItem);
+                    window.draggedItem.style.display = 'block';
+                    window.draggedItem = null;
+                }
+            });
+
+            function adjustPlaceholderPosition(currentHoveredItem) {
+                const allItems = Array.from(document.querySelectorAll('.draggable'));
+                const indexDragged = allItems.indexOf(window.draggedItem);
+                const indexHovered = allItems.indexOf(currentHoveredItem);
+                if (indexHovered > indexDragged) {
+                    currentHoveredItem.parentNode.insertBefore(window.placeholder, currentHoveredItem.nextSibling);
+                } else {
+                    currentHoveredItem.parentNode.insertBefore(window.placeholder, currentHoveredItem);
+                }
+            }
+        })()
     </script>
 </div>
