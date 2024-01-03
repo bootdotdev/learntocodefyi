@@ -20,6 +20,18 @@ import (
 	_ "github.com/libsql/libsql-client-go/libsql"
 )
 
+//go:embed pages/*.html
+var pages embed.FS
+
+//go:embed partials/*.html
+var partials embed.FS
+
+//go:embed public/*
+var public embed.FS
+
+//go:embed sqlc/schema/*.sql
+var embedMigrations embed.FS
+
 type handlerState struct {
 	queries        *sqlcdb.Queries
 	templates      *template.Template
@@ -45,8 +57,16 @@ func main() {
 		log.Fatal("error ensuring database: ", err)
 	}
 	queries := sqlcdb.New(db)
-	templates := template.Must(template.New("").ParseGlob("pages/*.html"))
-	templates = template.Must(templates.ParseGlob("partials/*.html"))
+
+	templates, err := template.New("").ParseFS(pages, "pages/*.html")
+	if err != nil {
+		log.Fatal("error parsing templates: ", err)
+	}
+	templates, err = templates.ParseFS(partials, "partials/*.html")
+	if err != nil {
+		log.Fatal("error parsing templates: ", err)
+	}
+
 	sendgridClient := sendgridwrap.NewClient("", os.Getenv("PLATFORM"))
 	hs := handlerState{
 		queries:        queries,
@@ -58,8 +78,8 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	fileServer := http.FileServer(http.Dir("./public"))
-	r.Handle("/public/*", http.StripPrefix("/public", fileServer))
+	fileServer := http.FileServer(http.FS(public))
+	r.Handle("/public/*", fileServer)
 	r.HandleFunc("/devreload", handlerDevReload)
 
 	r.Post("/login", hs.handlerLogin)
@@ -82,17 +102,19 @@ func main() {
 
 	fmt.Println("Server running on: http://localhost:8080")
 
+	addr := ":8080"
+	if os.Getenv("PLATFORM") == "PROD" {
+		addr = "0.0.0.0:8080"
+	}
+
 	server := http.Server{
-		Addr:         ":8080",
+		Addr:         addr,
 		Handler:      r,
 		ReadTimeout:  60 * time.Second,
 		WriteTimeout: 60 * time.Second,
 	}
 	log.Fatal(server.ListenAndServe())
 }
-
-//go:embed sqlc/schema/*.sql
-var embedMigrations embed.FS
 
 func ensureDB(db *sql.DB) error {
 	err := db.Ping()
