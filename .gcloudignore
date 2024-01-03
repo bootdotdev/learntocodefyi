@@ -1,0 +1,6 @@
+/vendor/
+/internal/
+cmd/
+docs/
+Makefile
+README.md
