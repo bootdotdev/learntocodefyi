@@ -77,10 +77,15 @@ func (c Client) SendMagicLink(toEmail, toName, loginLink string) error {
 	request := sendgrid.GetRequest(c.APIKey, "/v3/mail/send", host)
 	request.Method = "POST"
 	request.Body = mail.GetRequestBody(m)
-	_, err := sendgrid.MakeRequest(request)
+	resp, err := sendgrid.MakeRequest(request)
 	if err != nil {
 		return err
 	}
+
+	if resp.StatusCode > 299 {
+		return fmt.Errorf("bad response from sendgrid. code: %v, body %v", resp.StatusCode, resp.Body)
+	}
+
 	return nil
 }
 

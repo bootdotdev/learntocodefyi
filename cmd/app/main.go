@@ -48,6 +48,10 @@ func main() {
 	if sqlURL == "" {
 		log.Fatal("No SQLURL set in .env")
 	}
+	sendgridAPIKey := os.Getenv("SENDGRID_API_KEY")
+	if sendgridAPIKey == "" {
+		log.Fatal("No SENDGRID_API_KEY set in .env")
+	}
 	db, err := sql.Open("libsql", sqlURL)
 	if err != nil {
 		log.Fatal("error opening database: ", err)
@@ -67,7 +71,7 @@ func main() {
 		log.Fatal("error parsing templates: ", err)
 	}
 
-	sendgridClient := sendgridwrap.NewClient("", os.Getenv("PLATFORM"))
+	sendgridClient := sendgridwrap.NewClient(sendgridAPIKey, os.Getenv("PLATFORM"))
 	hs := handlerState{
 		queries:        queries,
 		templates:      templates,
