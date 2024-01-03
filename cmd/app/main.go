@@ -21,13 +21,13 @@ import (
 )
 
 //go:embed pages/*.html
-var pages embed.FS
+var pagesFS embed.FS
 
 //go:embed partials/*.html
-var partials embed.FS
+var partialsFS embed.FS
 
 //go:embed public/*
-var public embed.FS
+var publicFS embed.FS
 
 //go:embed sqlc/schema/*.sql
 var embedMigrations embed.FS
@@ -62,11 +62,11 @@ func main() {
 	}
 	queries := sqlcdb.New(db)
 
-	templates, err := template.New("").ParseFS(pages, "pages/*.html")
+	templates, err := template.New("").ParseFS(pagesFS, "pages/*.html")
 	if err != nil {
 		log.Fatal("error parsing templates: ", err)
 	}
-	templates, err = templates.ParseFS(partials, "partials/*.html")
+	templates, err = templates.ParseFS(partialsFS, "partials/*.html")
 	if err != nil {
 		log.Fatal("error parsing templates: ", err)
 	}
@@ -82,7 +82,7 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	fileServer := http.FileServer(http.FS(public))
+	fileServer := http.FileServer(http.FS(publicFS))
 	r.Handle("/public/*", fileServer)
 	r.HandleFunc("/devreload", handlerDevReload)
 
