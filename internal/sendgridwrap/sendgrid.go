@@ -14,7 +14,7 @@ const (
 )
 
 const (
-	LearnToCodeFYIListID = "d9b0b0c0-5b0a-4b0a-9b0a-0b0a0b0a0b0a"
+	LearnToCodeFYIListID = "ca9ecbeb-2741-4365-9e5e-600058798398"
 )
 
 // Client -
@@ -33,7 +33,7 @@ func NewClient(apiKey, platform string) Client {
 
 // SendMagicLink -
 func (c Client) SendMagicLink(toEmail, toName, loginLink string) error {
-	const templateID = "d-a8edcea9806b4cdbbb72ff85b8efd93c"
+	const templateID = "d-6e010242fdb54c819d93ce43f0e3a51c"
 	const fromEmail = "no-reply@learntocode.fyi"
 	const fromName = "LearnToCode.fyi"
 
