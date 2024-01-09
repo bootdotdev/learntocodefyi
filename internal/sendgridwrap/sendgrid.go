@@ -34,7 +34,7 @@ func NewClient(apiKey, platform string) Client {
 // SendMagicLink -
 func (c Client) SendMagicLink(toEmail, toName, loginLink string) error {
 	const templateID = "d-6e010242fdb54c819d93ce43f0e3a51c"
-	const fromEmail = "no-reply@learntocode.fyi"
+	const fromEmail = "hello@learntocode.fyi"
 	const fromName = "LearnToCode.fyi"
 
 	if c.Platform != "PROD" {

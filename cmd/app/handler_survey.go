@@ -88,7 +88,9 @@ func (hs *handlerState) handlerPostSurvey(w http.ResponseWriter, r *http.Request
 	}
 	answers := r.Form["answer"]
 	finalAnswer := strings.Join(answers, "|")
-	if finalAnswer == "" {
+	if finalAnswer == "" &&
+		// multichoice questions can have no answer
+		!(questionStruct.QuestionType == ChoiceQuestionType && questionStruct.ChoiceQuestion.MaxSelection != 1) {
 		http.Error(w, "Answer is required", http.StatusBadRequest)
 		return
 	}

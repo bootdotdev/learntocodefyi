@@ -442,7 +442,7 @@ func getQuestions() []Question {
 				Question: "Which is the hardest part of building large projects from scratch?",
 				Answers: []string{
 					"I can follow guided tutorials, but don't know where to start on my own",
-					"I understand fundamentals and theory, but don't know how to put it all together",
+					"I don't know how to put basic concepts together to build a full project",
 				},
 				MaxSelection: 1,
 			},

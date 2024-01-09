@@ -37,24 +37,29 @@
     <script>
         (() => {
             const maxLimit = parseInt(document.getElementById('hiddenMaxSelectionData').value);
+
+            if (maxLimit < 1) {
+                return;
+            }
+
             const checkboxes = document.querySelectorAll('input[type="checkbox"][name="answer"]');
 
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
+            for (const checkbox of checkboxes) {
+                checkbox.addEventListener('change', () => {
                     const checkedCount = document.querySelectorAll('input[type="checkbox"][name="answer"]:checked').length;
                     if (checkedCount >= maxLimit) {
-                        checkboxes.forEach(function (item) {
+                        for (const item of checkboxes) {
                             if (!item.checked) {
                                 item.disabled = true;
                             }
-                        });
+                        }
                     } else {
-                        checkboxes.forEach(function (item) {
+                        for (const item of checkboxes) {
                             item.disabled = false;
-                        });
+                        }
                     }
                 });
-            });
+            }
         })()
     </script>
 
